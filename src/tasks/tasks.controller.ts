@@ -9,12 +9,13 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
+import { Task } from './task.entity';
 
 /**
  * Any incoming request to /tasks will be handled by this controller thanks to the controller decorator.
@@ -42,21 +43,21 @@ export class TasksController {
    * @returns {Task[]}
    * @memberof TasksController
    */
-  @Get()
+  /* @Get()
   getTasks(@Query(ValidationPipe) filterDto: GetTasksFilterDto): Task[] {
     if (Object.keys(filterDto).length) {
       return this.tasksService.getTasksWithFilters(filterDto);
     } else {
       return this.tasksService.getAllTasks();
     }
-  }
+  } */
 
   @Get('/:id')
   getTaskById(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     // Alternatively, you can extract all url parameters into a single object
     // @Param() params: any
-  ): Task {
+  ): Promise<Task> {
     return this.tasksService.getTaskById(id);
   }
 
@@ -66,22 +67,22 @@ export class TasksController {
     @Body() createTaskDto: CreateTaskDto,
     // Alternatively, you can extract only certain values from the body
     // specifiying the name of the key inside the body as an argument of the @Body() decorator.
-    /* @Body('title') title: string,
-    @Body('description') description: string */
-  ): Task {
+    // @Body('title') title: string,
+    // @Body('description') description: string
+  ): Promise<Task> {
     return this.tasksService.createTask(createTaskDto);
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id') id: string): void {
-    this.tasksService.deleteTask(id);
+  deleteTask(@Param('id', ParseIntPipe) id: number): Promise<Task> {
+    return this.tasksService.deleteTask(id);
   }
 
-  @Patch('/:id/status')
+  /* @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
     @Body('status', TaskStatusValidationPipe) status: TaskStatus,
   ): Task {
     return this.tasksService.updateTaskStatus(id, status);
-  }
+  } */
 }
