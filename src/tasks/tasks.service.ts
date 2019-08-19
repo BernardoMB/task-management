@@ -4,6 +4,12 @@ import * as uuid from 'uuid/v1';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
+/**
+ * This injectable class is the service that hanldes the business logic of the application related to taks.
+ *
+ * @export
+ * @class TasksService
+ */
 @Injectable()
 export class TasksService {
   private tasks: Task[] = [];
@@ -21,9 +27,9 @@ export class TasksService {
     }
 
     if (search) {
-      tasks = tasks.filter(task =>
-        task.title.includes(search) ||
-        task.description.includes(search),
+      tasks = tasks.filter(
+        task =>
+          task.title.includes(search) || task.description.includes(search),
       );
     }
 
