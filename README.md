@@ -6,7 +6,7 @@
 [travis-url]: https://travis-ci.org/nestjs/nest
 [linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
 [linux-url]: https://travis-ci.org/nestjs/nest
-  
+
   <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
     <p align="center">
 <a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
@@ -72,4 +72,18 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## License
 
-  Nest is [MIT licensed](LICENSE).
+Nest is [MIT licensed](LICENSE).
+
+## Database
+
+This project uses TypeORM in order to query and manage the data. See official documentation [here](https://typeorm.io).
+
+Install the following packages:
+
+```bash
+$ npm install @nestjs/typeorm typeorm pg --save
+```
+
+- **@nestjs/typeorm**: The bridge NestJS has created to work with typeorm
+- **typeorm**: Actual TypeORM NPM module
+- **pg**: Database driver for Postgres
