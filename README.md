@@ -84,6 +84,19 @@ Install the following packages:
 $ npm install @nestjs/typeorm typeorm pg --save
 ```
 
-- **@nestjs/typeorm**: The bridge NestJS has created to work with typeorm
-- **typeorm**: Actual TypeORM NPM module
-- **pg**: Database driver for Postgres
+- **@nestjs/typeorm**: The bridge NestJS has created to work with TypeORM.
+- **typeorm**: Actual TypeORM NPM module.
+- **pg**: Database driver for Postgres.
+
+## Tokens
+
+This project is using the following packages for authentication mechanism:
+
+```bash
+$ npm install @nestjs/jwt @nestjs/passport passport passport-jwt --save
+```
+
+- **@nestjs/jwt**: NestJS module for working with Json Web Tokens (JWT).
+- **@nestjs/passport**: NestJS wrapper for implementing Passport middleware.
+- **passport**: Pasport library. It is an authentication middleware for NodeJs and it supports mutiple authentication strategies. It helps implementing authentication in a very easy way doing lots for us under the hood based on the token, the user and the resquest object.
+- **passport-jwt**: Configuring Passport to use jwt tokens.
