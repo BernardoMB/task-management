@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
+import { AuthModule } from './auth/auth.module';
 
 /**
  * Starting point of the application. This is the main module of the application.
@@ -14,6 +15,7 @@ import { typeOrmConfig } from './config/typeorm.config';
     // Database configuration
     TypeOrmModule.forRoot(typeOrmConfig),
     TasksModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
