@@ -7,8 +7,24 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
+/**
+ * This class handles the comunication with the database regarding
+ * users.
+ *
+ * @export
+ * @class UserRepository
+ * @extends {Repository<User>}
+ */
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+  /**
+   * Sign up a user.
+   * This methods tells the database to store a new user.
+   *
+   * @param {AuthCredentialsDto} authCredentialsDto
+   * @returns {Promise<void>}
+   * @memberof UserRepository
+   */
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { username, email, password } = authCredentialsDto;
     if (!username || !email || !password) {
@@ -19,13 +35,15 @@ export class UserRepository extends Repository<User> {
     const user = new User();
     user.username = username;
     user.email = email;
+    // Generate the user's random hash.
     user.salt = await bcrypt.genSalt();
+    // Create password hash.
     user.password = await this.hashPassword(password, user.salt);
     try {
       await user.save();
     } catch (error) {
       if (error.code === '23505') {
-        // duplicate username
+        // Duplicate username.
         const duplicateKey: string = error.detail.split('(')[1].split(')')[0];
         switch (duplicateKey) {
           case 'email':
@@ -41,6 +59,13 @@ export class UserRepository extends Repository<User> {
     }
   }
 
+  /**
+   * Returns the username if the password is valid.
+   *
+   * @param {AuthCredentialsDto} authCredentialsDto
+   * @returns {Promise<string>}
+   * @memberof UserRepository
+   */
   async validateUserPassword(
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<string> {
@@ -53,6 +78,15 @@ export class UserRepository extends Repository<User> {
     }
   }
 
+  /**
+   * This method creates a password hash using a salt.
+   *
+   * @private
+   * @param {string} pass
+   * @param {string} salt
+   * @returns {Promise<string>}
+   * @memberof UserRepository
+   */
   private async hashPassword(pass: string, salt: string): Promise<string> {
     return bcrypt.hash(pass, salt);
   }

@@ -7,35 +7,52 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
+  /**
+   * Creates an instance of AuthController.
+   * @param {AuthService} authService
+   * @memberof AuthController
+   */
   constructor(private authService: AuthService) {}
 
+  /**
+   * This method is decorated with the @UsePipes() decorator passing
+   * the ValidationPipe so the authCredentialsDto object will be
+   * validated using decorators inside the AuthCredentialsDto class.
+   * The @Body() decorator inside the method's signature indicates that
+   * the hole body of the request must be of type AuthCredentialsDto.
+   *
+   * @param {AuthCredentialsDto} authCredentialsDto
+   * @returns {Promise<void>}
+   * @memberof AuthController
+   */
   @Post('/signup')
-  @UsePipes(ValidationPipe) // authCredentialsDto will be validated using decorators inside the AuthCredentialsDto
+  @UsePipes(ValidationPipe)
   signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
     return this.authService.signUp(authCredentialsDto);
   }
 
-  // Alternatively
-  /* @Post('/signup')
-  @UsePipes(ValidationPipe)
-  signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    return this.authService.signUp(authCredentialsDto);
-  } */
-
+  /**
+   * The @Body() decorator inside the method's signature indicates that
+   * the hole body of the request must be of type AuthCredentialsDto
+   * and it must be validated using the decorators declared in the
+   * AuthCredentialsDto class.
+   *
+   * @param {AuthCredentialsDto} authCredentialsDto
+   * @returns {Promise<{ accessToken: string }>}
+   * @memberof AuthController
+   */
   @Post('/signin')
   signIn(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
     return this.authService.signIn(authCredentialsDto);
   }
-
-  // Guarded endpoint
 
   /**
    * This is a guarded endpoint. Because of the AuthGuard,
@@ -47,7 +64,7 @@ export class AuthController {
    * will inject the user object into que request object
    * The @Req() decorator gives acces to the complete request object.
    *
-   * @param {*}
+   * @param {*} request
    * @memberof AuthController
    */
   @Post('/test')

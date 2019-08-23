@@ -1,5 +1,12 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+} from 'typeorm';
 import { TaskStatus } from './task-status.enum';
+import { User } from '../auth/user.entity';
 
 @Entity()
 export class Task extends BaseEntity {
@@ -22,4 +29,12 @@ export class Task extends BaseEntity {
 
   @Column()
   status: TaskStatus;
+  /**
+   * This property tells the Task entity that there is a many-to-one relationship with the users table.
+   *
+   * @type {User}
+   * @memberof Task
+   */
+  @ManyToOne(type => User, user => user.tasks, { eager: false })
+  user: User;
 }

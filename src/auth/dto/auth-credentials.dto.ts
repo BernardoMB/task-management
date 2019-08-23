@@ -22,6 +22,7 @@ export class AuthCredentialsDto {
   @MinLength(8)
   @MaxLength(20)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    // Error message to diaplay if password doe snot match the regular expression.
     message:
       'Password must contain special characters, upper case and lower case letters',
   })
