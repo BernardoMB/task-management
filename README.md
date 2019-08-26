@@ -103,4 +103,4 @@ $ npm install @nestjs/jwt @nestjs/passport passport passport-jwt --save
 
 ## Logs
 
-Using @nestjs/common logger
+Using @nestjs/common logger. See official NestJS documentation on logging.
