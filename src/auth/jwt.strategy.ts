@@ -21,7 +21,7 @@ import { User } from './user.entity';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   /**
    * Creates an instance of JwtStrategy.
-   * This constructor configures the class from which this class is extending functionality.
+   * This constructor configures the class from which this class extends functionality.
    * It configures the PassportStrategy which uses the Strategy from the passport-jwt package.
    *
    * @param {UserRepository} userRepository
@@ -35,6 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       // Define how the jwt token is extracted form the request.
       // The application needs this token in order to authenticate the user.
+      // Extracting the token from the header is a common practice.
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       // Define the secrete used in the module configuration.
       // This is the secret that Passport is going to use to verify the signatire of the token that is extracted form the request.
@@ -47,11 +48,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * First, the Passport JWT Strategy is going to verify the signature of the extracted
    * token using the secret provided in the secretOrKey of the strategy's configuration object.
    * If the signature is not valid, then an error is thrown.
-   * If the signatire is valid, then this method is called passing the payload of the token.
+   * If the signature is valid, then this method is called passing the payload of the token.
    *
    * @param {JwtPayload} payload This payload is already verified at this point
-   * (by the moment this function gets executed, the signature of the token has already been verified).
-   * @returns {Promise<User>}
+   * (by the moment this function gets executed, the signature of the token has already
+   * been verified using the secret provided in the super contructor above).
+   * @returns {Promise<User>} Whatever this method returns gets injected in the request
+   * for every guarded route.
    * @memberof JwtStrategy
    */
   async validate(payload: JwtPayload): Promise<User> {

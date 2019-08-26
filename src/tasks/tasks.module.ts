@@ -16,7 +16,10 @@ import { AuthModule } from '../auth/auth.module';
   imports: [
     // Database
     TypeOrmModule.forFeature([TaskRepository]),
-    AuthModule, // Everything the AuthModule exports is going to be available inside this module
+    // Authentication
+    // Everything the AuthModule exports is going to be available inside this module.
+    // With the following import the application is able to secure routes inside this module.
+    AuthModule,
   ],
   controllers: [TasksController],
   providers: [TasksService],

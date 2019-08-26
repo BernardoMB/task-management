@@ -6,8 +6,8 @@ import {
   Unique,
   OneToMany,
 } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { Task } from '../tasks/task.entity';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 // Specify the array of column names that must be unique.

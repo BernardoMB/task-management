@@ -10,6 +10,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
+import { GetUser } from './decorators/get-user.decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -64,12 +66,29 @@ export class AuthController {
    * will inject the user object into que request object
    * The @Req() decorator gives acces to the complete request object.
    *
+   * @param {*} request The entire request object.
+   * @memberof AuthController
+   */
+  @Post('/test1')
+  @UseGuards(AuthGuard())
+  test1(@Req() request: any) {
+    // At this point, the request object will contain the user
+    // thanks to the validate() method inside the JwtStrategy class.
+    // Note: the validate() method gets executed for this endpoint
+    // because it is decorayed with @UseGuards(AuthGuard()).
+    console.log(request);
+  }
+
+  /**
+   * Using the @GetUser() decorator to extract the user
+   * that is injected in the request via the AuthGuard.
+   *
    * @param {*} request
    * @memberof AuthController
    */
-  @Post('/test')
+  @Post('/test2')
   @UseGuards(AuthGuard())
-  test(@Req() request: any) {
-    console.log(request);
+  test2(@GetUser() user: User) {
+    console.log(user);
   }
 }

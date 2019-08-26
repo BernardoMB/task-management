@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
-import { JwtStrategy } from './jwt.strategy';
 
 /**
  * This module lets the application to issue tokens for the
@@ -13,8 +13,7 @@ import { JwtStrategy } from './jwt.strategy';
  * every request they make without having to send their credentials
  * to prove that they are who they say they are.
  * This authentication module uses Json Web Token (JWT) authentication
- * with a defined strategy to handle user's tokens and
- * authentication.
+ * with a defined strategy to handle user's tokens and authentication.
  * The Json Web Tokens issued by the application have 3 components:
  * 1. Header: Contains metadata about the token (type, hashing algorithm, etc)
  * 2. Payload: Contains claims (statements about an entity - for example, a user) and additional data.
