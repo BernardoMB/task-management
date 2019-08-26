@@ -100,3 +100,7 @@ $ npm install @nestjs/jwt @nestjs/passport passport passport-jwt --save
 - **@nestjs/passport**: NestJS wrapper for implementing Passport middleware.
 - **passport**: Pasport library. It is an authentication middleware for NodeJs and it supports mutiple authentication strategies. It helps implementing authentication in a very easy way doing lots for us under the hood based on the token, the user and the resquest object.
 - **passport-jwt**: Configuring Passport to use jwt tokens.
+
+## Logs
+
+Using @nestjs/common logger

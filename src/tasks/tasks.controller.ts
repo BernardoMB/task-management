@@ -11,6 +11,7 @@ import {
   ValidationPipe,
   ParseIntPipe,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -34,6 +35,7 @@ import { GetUser } from '../auth/decorators/get-user.decorator';
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
+  private logger = new Logger('TaskController');
   /**
    * Creates an instance of TasksController.
    * Tasks service can be injected here because it a TypeScript class with the injectable decorator.
@@ -63,6 +65,13 @@ export class TasksController {
     @Query(ValidationPipe) filterDto: GetTasksFilterDto,
     @GetUser() user: User,
   ): Promise<Task[]> {
+    this.logger.verbose(
+      `User "${user.username}" retreiving all tasks. Filters: ${JSON.stringify(
+        filterDto,
+        null,
+        2,
+      )}`,
+    );
     return this.tasksService.getTasks(filterDto, user);
   }
 
@@ -101,7 +110,7 @@ export class TasksController {
    */
   @Post()
   @UsePipes(ValidationPipe)
-  createTask(
+  async createTask(
     @Body() createTaskDto: CreateTaskDto,
     // Alternatively, you can extract only certain values from the body
     // specifiying the name of the key inside the body as an argument of the @Body() decorator.
@@ -109,7 +118,18 @@ export class TasksController {
     // @Body('description') description: string
     @GetUser() user: User,
   ): Promise<Task> {
-    return this.tasksService.createTask(createTaskDto, user);
+    this.logger.verbose(
+      `User "${user.username}" creating a new task. Data: ${JSON.stringify(
+        createTaskDto,
+        null,
+        2,
+      )}`,
+    );
+    const createdTask = await this.tasksService.createTask(createTaskDto, user);
+    this.logger.verbose(
+      `Task created: ${JSON.stringify(createdTask, null, 2)}`,
+    );
+    return createdTask;
   }
 
   /**
