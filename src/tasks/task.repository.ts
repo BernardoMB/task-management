@@ -4,6 +4,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskStatus } from './task-status.enum';
 import { NotFoundException } from '@nestjs/common';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
+import { User } from 'src/auth/user.entity';
 
 /**
  * Task entity repository. This class will hold all the logic needed
@@ -15,10 +16,20 @@ import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
  */
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
-  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+  /**
+   * Retreive all user's task from the database.
+   *
+   * @param {GetTasksFilterDto} filterDto
+   * @param {User} user The owner of the task to be retreived.
+   * @returns {Promise<Task[]>}
+   * @memberof TaskRepository
+   */
+  async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
     const { status, search } = filterDto;
     // Using query builder
     const query = this.createQueryBuilder('task');
+    // Retreive only tasks owned by the user.
+    query.where('task.userId = :userId', { userId: user.id });
     if (status) {
       query.andWhere('task.status = :status', { status });
     }
@@ -32,18 +43,40 @@ export class TaskRepository extends Repository<Task> {
     return tasks;
   }
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+  /**
+   * This mehtod stores a task asociated to a user.
+   *
+   * @param {CreateTaskDto} createTaskDto
+   * @returns {Promise<Task>}
+   * @memberof TaskRepository
+   */
+  async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
     const { title, description } = createTaskDto;
     const task = new Task();
     task.title = title;
     task.description = description;
     task.status = TaskStatus.OPEN;
+    task.user = user;
     await task.save();
     return task;
   }
 
-  async deleteTask(id: number): Promise<Task> {
-    const found = await this.findOne(id);
+  /**
+   * Delete a task from the database.
+   *
+   * @param {number} id Unique identifier of the task to be removed form the database.
+   * @param {User} user User trying to delete the task.
+   * @returns {Promise<Task>}
+   * @memberof TaskRepository
+   */
+  async deleteTask(id: number, user: User): Promise<Task> {
+    const matchingCriteria = {
+      id,
+      userId: user.id,
+    };
+    const found = await this.findOne({
+      where: matchingCriteria,
+    });
     if (!found) {
       throw new NotFoundException(
         `Cannot delete task. Task with ID ${id} not found`,

@@ -39,6 +39,8 @@ export class User extends BaseEntity {
   @Column()
   salt: string;
   /**
+   * Define a the user-tasks relationship.
+   * Entity relations are defined here.
    * The following property help us retreive all the tasks a user owns.
    * Eager set to true means that user.tasks notation can be used to get user's tasks.
    *

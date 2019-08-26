@@ -30,6 +30,8 @@ export class Task extends BaseEntity {
   @Column()
   status: TaskStatus;
   /**
+   * Define the user-tasks relationship.
+   * The raltions of the relational database are defined inside entities.
    * This property tells the Task entity that there is a many-to-one relationship with the users table.
    *
    * @type {User}
@@ -37,4 +39,12 @@ export class Task extends BaseEntity {
    */
   @ManyToOne(type => User, user => user.tasks, { eager: false })
   user: User;
+  /**
+   * The unique identifier of the user that owns the task.
+   *
+   * @type {number}
+   * @memberof Task
+   */
+  @Column()
+  userId: number;
 }
