@@ -104,3 +104,11 @@ $ npm install @nestjs/jwt @nestjs/passport passport passport-jwt --save
 ## Logs
 
 Using @nestjs/common logger. See official NestJS documentation on logging.
+
+## Environment Variables
+
+Environment variables are set up via NPM scripts. This is not supported in Windows by default. To overcome this, install the win-node-env NPM package globally:
+
+```bash
+$ npm install -g win-node-env
+```
