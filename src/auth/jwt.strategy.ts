@@ -5,6 +5,7 @@ import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
+import * as config from 'config';
 
 /**
  * This class going to be used to authenticate the user and retreive it using the
@@ -39,7 +40,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       // Define the secrete used in the module configuration.
       // This is the secret that Passport is going to use to verify the signatire of the token that is extracted form the request.
-      secretOrKey: 'cualquiermamaxd666',
+      secretOrKey: process.env.JWT_SECRET || config.get('jwt.secret'),
     });
   }
 

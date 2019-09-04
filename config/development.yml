@@ -1,3 +1,16 @@
+--- # docuemtn start
+
+#############################
+# DEVELOPMENT CONFIGURATION #
+#############################
+
+# Here goes all the configuration that is specific
+# to the development environment.
+
+# If the application is run in development mode
+# the following configuration will apply and it can overide
+# values already defined in the default configuration.
+
 db:
   host: 'localhost'
   username: 'postgres'

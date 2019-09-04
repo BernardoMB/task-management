@@ -1,2 +1,15 @@
+--- # docuemtn start
+
+############################
+# PRODUCTION CONFIGURATION #
+############################
+
+# Here goes all the configuration that is specific
+# to the production environment.
+
+# If the application is run in production mode
+# the following configuration will apply and it can overide
+# values already defined in the default configuration.
+
 db:
   synchronize: false

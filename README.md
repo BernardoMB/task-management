@@ -101,14 +101,79 @@ $ npm install @nestjs/jwt @nestjs/passport passport passport-jwt --save
 - **passport**: Pasport library. It is an authentication middleware for NodeJs and it supports mutiple authentication strategies. It helps implementing authentication in a very easy way doing lots for us under the hood based on the token, the user and the resquest object.
 - **passport-jwt**: Configuring Passport to use jwt tokens.
 
+The authentication module may be adepted to work in a similary way the Finero Core Server's authentication module does.
+
 ## Logs
 
 Using @nestjs/common logger. See official NestJS documentation on logging.
 
-## Environment Variables
+## Configuration
 
-Environment variables are set up via NPM scripts. This is not supported in Windows by default. To overcome this, install the win-node-env NPM package globally:
+The environment is the mode in which the application will run (development, staging, production, etc). Applications should be configured accordingly to the desired environment in which they are intended to run on.
+
+### Environment Variables
+
+Environment variables are used to configure the application  accordingly to its desired environment.
+
+These variables are set up via NPM scripts. This is not supported in Windows by default. To overcome this, install the win-node-env NPM package globally:
 
 ```bash
 $ npm install -g win-node-env
 ```
+
+NODE_ENV is an environment variable and it is used to determine the mode in which the application will run (development, staging, production, etc).
+
+### Configuration
+
+Configuration is the central way of defining values that are loaded upon starting the application (should not be changed during runtime).
+
+Special configuration may be set per environment:
+- **development**: configuration specific to the development environment.
+- **staging**: configuration specific to the staging environment.
+- **production**: configuration specific to the production environment.
+
+Configuration can be defined in the code base (code inside the repository). This is useful when working with multiple developers via version control. Your configuration should always work for the code it ships with.
+
+To define configuration in the code base this repository uses the following package:
+
+```bash
+$ npm install config --save
+```
+
+Configuration can also be defined in many ways (JSON, YAML, XML, Environment variables, etc), using custom solutions or open-source libraries.
+
+By default, NodeJS applications are run with the environment variable NODE_ENV set to undefined. If NODE_ENV is set to undefined, then the Config package will load the development configuration and the rest of the environment and configuration variables should be set accordingly.
+
+### Codebase VS Environment Variables for configuration
+
+Configuration may be defined in the code base of the application. For example, in a **config** folder inside the **code base** of the repository.
+
+Configuration may also be defined via **environment variables** (which are provided when running the application).
+
+Which option should be used? The answer is both. 
+
+Non-sensitive information such as the port to run the application will be defined in the code base of the repository.
+
+Sensitive information such as database username and password **production mode** will be provided via environment variables upon running the application. 
+
+The configuration is defined in *config/*.
+
+In order to define environment variables the application will be run in the following way: 
+
+```bash
+$ PORT=3001 npm run start:dev
+```
+
+Here the application will use by default the development configuration and the PORT will be set to 3001.
+
+## CORS
+
+This application may be consumed by a client application. The origin of the front-end application that consumes this API may be the same as the origin from which this API is served.
+
+For example, this application may run on *localhost:3000* and the front-end application may be served by *localhost:3001*. In this case the origin of the front-end application is not the same as the origin of this NestJS application. By default NestJs applications only allow incoming request from the same origin. To fix this, we need to allow request from different origins in this NestJS application. To do so, Cross Origin Request Sharing (CORS) should be enabled.
+
+This application will have CORS enabled only for development mode (development environment). For production mode, this application will only allow incoming requests from the whitelisted origins, which will be the origin from which the front-end application will be served.
+
+## Banking
+
+The bank comunication will be handled in a similar way the Product Server's RPM service does.

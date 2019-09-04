@@ -1,3 +1,12 @@
+--- # docuemtn start
+
+#########################
+# DEFAULT CONFIGURATION #
+#########################
+
+# Here goes all the configuration that is not specific
+# to an environment.
+
 server:
   port: 3000
 

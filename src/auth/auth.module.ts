@@ -6,6 +6,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
+import * as config from 'config';
+
+const jwtConfig = config.get('jwt');
 
 /**
  * This module lets the application to issue tokens for the
@@ -37,9 +40,9 @@ import { UserRepository } from './user.repository';
     // This module is only used to create the token with its 3 components (create a signed token).
     // It is like an utility module that is only used inside this module.
     JwtModule.register({
-      secret: 'cualquiermamaxd666',
+      secret: process.env.JWT_SECRET || jwtConfig.secret,
       signOptions: {
-        expiresIn: 3600, // 1 hour
+        expiresIn: jwtConfig.expiresIn,
       },
     }),
     // Users database entity configuration.
