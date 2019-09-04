@@ -1,5 +1,6 @@
 import * as config from 'config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import * as chalk from 'chalk';
 
 // Import configuration file.
 // Note: the configuration loaded here depends on the
@@ -7,6 +8,8 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 // If NODE_ENV is undefined, config will load the development
 // configuration defined in development.yml.
 const dbConfig = config.get('db');
+const pass = process.env.RDS_PASSWORD || dbConfig.password;
+console.log(chalk.default.bgCyan(pass));
 
 // This file has the configuration object for TypeORM inisialization
 export const typeOrmConfig: TypeOrmModuleOptions = {
@@ -23,5 +26,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   // Everytime the connection starts it is going to syncronize with the schemas in the
   // Postgres database. Should be set to false in production.
-  synchronize: process.env.TYPEORM_SYNC || dbConfig.synchronize,
+  synchronize: process.env.TYPEORM_SYNC || dbConfig.synchronize,
 };

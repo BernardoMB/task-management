@@ -29,6 +29,10 @@ async function bootstrap() {
   // app.useGlobalPipes(SomePipe);
   await app.listen(port);
   // Passing bootstrap because the logger is used inside the bootstrap function.
-  logger.log(`Application listening on port ${port} under ${JSON.stringify(process.env.NODE_ENV)} environment`);
+  logger.log(
+    `Application listening on port ${port} under ${JSON.stringify(
+      process.env.NODE_ENV,
+    )} environment`,
+  );
 }
 bootstrap();
