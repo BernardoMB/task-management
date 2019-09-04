@@ -177,3 +177,7 @@ This application will have CORS enabled only for development mode (development e
 ## Banking
 
 The bank comunication will be handled in a similar way the Product Server's RPM service does.
+
+## Front-end Application
+
+There is a front-end application using React deployed via Amazon S3 service. Please see the [video](https://www.udemy.com/nestjs-zero-to-hero/learn/lecture/15044214#overview) explaining how to host a website using Amazon S3 service.

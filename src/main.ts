@@ -8,6 +8,9 @@ import * as config from 'config';
  *
  */
 async function bootstrap() {
+  // Instanciating the logger class passing bootstrap
+  // This logger is being instanciated inside the bootstrap function
+  const logger = new Logger('bootstrap');
   // Get server confguration.
   // The package config will load the configuration accordingly
   // to the mode in which the application is running on.
@@ -17,12 +20,15 @@ async function bootstrap() {
   // Configure the application to enable CORS in development mode
   if (process.env.NODE_ENV === 'development') {
     app.enableCors();
+  } else {
+    // Application is in production mode
+    app.enableCors({ origin: serverConfig.origin });
+    logger.log(`Accepting requests from origin "${serverConfig.origin}"`);
   }
   // Implement application level pipes
   // app.useGlobalPipes(SomePipe);
   await app.listen(port);
   // Passing bootstrap because the logger is used inside the bootstrap function.
-  const logger = new Logger('bootstrap');
   logger.log(`Application listening on port ${port} under ${JSON.stringify(process.env.NODE_ENV)} environment`);
 }
 bootstrap();
