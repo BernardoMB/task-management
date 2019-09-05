@@ -113,7 +113,7 @@ The environment is the mode in which the application will run (development, stag
 
 ### Environment Variables
 
-Environment variables are used to configure the application  accordingly to its desired environment.
+Environment variables are used to configure the application accordingly to its desired environment.
 
 These variables are set up via NPM scripts. This is not supported in Windows by default. To overcome this, install the win-node-env NPM package globally:
 
@@ -128,6 +128,7 @@ NODE_ENV is an environment variable and it is used to determine the mode in whic
 Configuration is the central way of defining values that are loaded upon starting the application (should not be changed during runtime).
 
 Special configuration may be set per environment:
+
 - **development**: configuration specific to the development environment.
 - **staging**: configuration specific to the staging environment.
 - **production**: configuration specific to the production environment.
@@ -150,15 +151,15 @@ Configuration may be defined in the code base of the application. For example, i
 
 Configuration may also be defined via **environment variables** (which are provided when running the application).
 
-Which option should be used? The answer is both. 
+Which option should be used? The answer is both.
 
 Non-sensitive information such as the port to run the application will be defined in the code base of the repository.
 
-Sensitive information such as database username and password **production mode** will be provided via environment variables upon running the application. 
+Sensitive information such as database username and password **production mode** will be provided via environment variables upon running the application.
 
-The configuration is defined in *config/*.
+The configuration is defined in _config/_.
 
-In order to define environment variables the application will be run in the following way: 
+In order to define environment variables the application will be run in the following way:
 
 ```bash
 $ PORT=3001 npm run start:dev
@@ -170,7 +171,7 @@ Here the application will use by default the development configuration and the P
 
 This application may be consumed by a client application. The origin of the front-end application that consumes this API may be the same as the origin from which this API is served.
 
-For example, this application may run on *localhost:3000* and the front-end application may be served by *localhost:3001*. In this case the origin of the front-end application is not the same as the origin of this NestJS application. By default NestJs applications only allow incoming request from the same origin. To fix this, we need to allow request from different origins in this NestJS application. To do so, Cross Origin Request Sharing (CORS) should be enabled.
+For example, this application may run on _localhost:3000_ and the front-end application may be served by _localhost:3001_. In this case the origin of the front-end application is not the same as the origin of this NestJS application. By default NestJs applications only allow incoming request from the same origin. To fix this, we need to allow request from different origins in this NestJS application. To do so, Cross Origin Request Sharing (CORS) should be enabled.
 
 This application will have CORS enabled only for development mode (development environment). For production mode, this application will only allow incoming requests from the whitelisted origins, which will be the origin from which the front-end application will be served.
 
@@ -183,3 +184,26 @@ The bank comunication will be handled in a similar way the Product Server's RPM 
 The front application that consumes this API can be found [here](https://github.com/BernardoMB/task-management-frontend).
 
 There is a front-end application using React deployed via Amazon S3 service. Please see the [video](https://www.udemy.com/nestjs-zero-to-hero/learn/lecture/15044214#overview) explaining how to host a website using Amazon S3 service.
+
+## Deployment
+
+Before Deploying to Production it is highly recommended to run the preprod:prod script.
+
+There could be some minor issues with import paths that still work in development mode. This is especially common when auto-importing files.
+
+It is very easy to catch these issues with this NPM command, as it builds the application into JavaScript. If any errors show up, they should be very easy to fix (otherwise, use the Q&A section here).
+
+Skipping this process may cause the errors to only appear after deploying the application to AWS, it will be annoying and will take a long time to debug and understand what exactly went wrong.
+
+Run the following command:
+
+```batch
+$ npm run prestart:prod
+```
+
+Some development dependencies need to be moved over to dependencies
+
+- @types/express
+- @types/node
+- ts-node
+- typescript
