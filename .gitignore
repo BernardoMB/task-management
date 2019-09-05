@@ -45,3 +45,6 @@ vscode/extensions.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Zip file
+task-management.rar
