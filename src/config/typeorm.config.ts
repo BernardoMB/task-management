@@ -8,8 +8,14 @@ import * as chalk from 'chalk';
 // If NODE_ENV is undefined, config will load the development
 // configuration defined in development.yml.
 const dbConfig = config.get('db');
-const pass = process.env.RDS_PASSWORD || dbConfig.password;
-console.log(chalk.default.bgCyan(pass));
+
+// This code is not necessary and it is just here for debugging porpuses.
+/* const env = process.env.NODE_ENV;
+console.log(`Environment: ${chalk.default.bgCyan(env)}`);
+const dbName = process.env.RDS_DBNAME || dbConfig.database;
+console.log(`Database name: ${chalk.default.bgCyan(dbName)}`);
+const dbPass = process.env.RDS_PASSWORD || dbConfig.password;
+console.log(`Database password: ${chalk.default.bgCyan(dbPass)}`); */
 
 // This file has the configuration object for TypeORM inisialization
 export const typeOrmConfig: TypeOrmModuleOptions = {
@@ -22,7 +28,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   port: process.env.RDS_PORT || dbConfig.port,
   username: process.env.RDS_USERNAME || dbConfig.username,
   password: process.env.RDS_PASSWORD || dbConfig.password,
-  database: process.env.RDS_DBNAME || dbConfig.database,
+  database: process.env.RDS_DB_NAME || dbConfig.database,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   // Everytime the connection starts it is going to syncronize with the schemas in the
   // Postgres database. Should be set to false in production.
