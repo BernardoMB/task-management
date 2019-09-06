@@ -6,6 +6,7 @@ import {
   ValidationPipe,
   UseGuards,
   Req,
+  Logger,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
@@ -15,6 +16,8 @@ import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
+  logger = new Logger('Auth Controller');
+
   /**
    * Creates an instance of AuthController.
    * @param {AuthService} authService
@@ -36,6 +39,13 @@ export class AuthController {
   @Post('/signup')
   @UsePipes(ValidationPipe)
   signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    this.logger.debug(
+      `Signing up user. Auth credentials DTO: ${JSON.stringify(
+        authCredentialsDto,
+        null,
+        2,
+      )}`,
+    );
     return this.authService.signUp(authCredentialsDto);
   }
 
@@ -53,6 +63,13 @@ export class AuthController {
   signIn(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
+    this.logger.debug(
+      `Signing in user. Auth credentials DTO: ${JSON.stringify(
+        authCredentialsDto,
+        null,
+        2,
+      )}`,
+    );
     return this.authService.signIn(authCredentialsDto);
   }
 

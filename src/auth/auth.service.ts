@@ -13,7 +13,7 @@ import { JwtPayload } from './interfaces/jwt-payload.interface';
  */
 @Injectable()
 export class AuthService {
-  private logger = new Logger('AuthService');
+  private logger = new Logger('Auth Service');
   /**
    * Creates an instance of AuthService.
    * @param {UserRepository} userRepository
@@ -55,7 +55,9 @@ export class AuthService {
       authCredentialsDto,
     );
     if (!username) {
-      throw new UnauthorizedException('Invalid credentials');
+      const msg = 'Invalid credentials';
+      this.logger.error(msg);
+      throw new UnauthorizedException(msg);
     }
     // Define the payload of the token for token creation.
     // This payload should not include sensitive information.

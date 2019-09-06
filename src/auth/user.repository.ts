@@ -1,6 +1,7 @@
 import {
   ConflictException,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { Repository, EntityRepository } from 'typeorm';
 import { User } from './user.entity';
@@ -17,6 +18,7 @@ import * as bcrypt from 'bcryptjs';
  */
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+  private logger = new Logger('User Repository');
   /**
    * Sign up a user.
    * This methods tells the database to store a new user.
@@ -28,9 +30,9 @@ export class UserRepository extends Repository<User> {
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { username, email, password } = authCredentialsDto;
     if (!username || !email || !password) {
-      throw new InternalServerErrorException(
-        'Invalid auth credentials data transfer object',
-      );
+      const msg = 'Invalid auth credentials data transfer object';
+      this.logger.error(msg);
+      throw new InternalServerErrorException(msg);
     }
     const user = new User();
     user.username = username;
@@ -42,18 +44,22 @@ export class UserRepository extends Repository<User> {
     try {
       await user.save();
     } catch (error) {
+      this.logger.error('Could not save user');
       if (error.code === '23505') {
         // Duplicate username.
         const duplicateKey: string = error.detail.split('(')[1].split(')')[0];
         switch (duplicateKey) {
           case 'email':
-            throw new ConflictException(`Email "${email}" is already in use`);
+            const msgEmail = `Email "${email}" is already in use`;
+            this.logger.error(msgEmail);
+            throw new ConflictException(msgEmail);
           case 'username':
-            throw new ConflictException(
-              `Username "${username}" is already in use`,
-            );
+            const msgUsername = `Username "${username}" is already in use`;
+            this.logger.error(msgUsername);
+            throw new ConflictException(msgUsername);
         }
       } else {
+        this.logger.error(error);
         throw new InternalServerErrorException();
       }
     }
@@ -70,8 +76,13 @@ export class UserRepository extends Repository<User> {
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<string> {
     const { username, password } = authCredentialsDto;
-    const user = await this.findOne({ username });
+    // const user = await this.findOne({ username });
+    const res = await this.find({
+      where: [{ username }, { email: username }],
+    });
+    const user = res[0];
     if (user && (await user.validatePassword(password))) {
+      this.logger.debug('User found and password is valid');
       return user.username;
     } else {
       return null;

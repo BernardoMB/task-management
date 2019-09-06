@@ -11,16 +11,20 @@ import {
 export class AuthCredentialsDto {
   @IsString()
   @MinLength(2)
-  @MaxLength(20)
+  @MaxLength(30)
   @IsNotEmpty()
   @IsOptional()
   username: string;
-  @IsEmail()
+  @IsString()
+  @MinLength(5)
+  @MaxLength(30)
+  @IsNotEmpty()
   @IsOptional()
+  @IsEmail()
   email: string;
   @IsString()
   @MinLength(8)
-  @MaxLength(20)
+  @MaxLength(30)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     // Error message to diaplay if password doe snot match the regular expression.
     message:
