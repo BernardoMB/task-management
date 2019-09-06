@@ -215,3 +215,13 @@ The name of the Elastic Beanstalk instance is **task-management-nestjs-app**.
 Please see the [video](https://www.udemy.com/nestjs-zero-to-hero/learn/lecture/15046592#overview) to deploy the application.
 
 Passwords and sensible information is stored in secret files.
+
+## Testing
+
+Tests are ran using Jest. By default, the test script is run with the following command:
+
+```bash
+$ npm run test
+```
+
+This command will run the jest command. The jest command by default sets the NODE_ENV environment variable as undefined by default. But this applications, in order to work needs to be run with NODE_ENV=development.
