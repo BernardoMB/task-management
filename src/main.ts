@@ -17,6 +17,9 @@ async function bootstrap() {
   const serverConfig = config.get('server');
   const port = process.env.PORT || serverConfig.port;
   const app = await NestFactory.create(AppModule);
+
+  console.log(`Application running on ${process.env.NODE_ENV} environment`);
+
   // Configure the application to enable CORS in development mode
   if (process.env.NODE_ENV === 'development') {
     app.enableCors();
