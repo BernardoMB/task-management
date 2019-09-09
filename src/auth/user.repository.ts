@@ -34,7 +34,8 @@ export class UserRepository extends Repository<User> {
       this.logger.error(msg);
       throw new InternalServerErrorException(msg);
     }
-    const user = new User();
+    // Create a new instance of User.
+    const user = this.create();
     user.username = username;
     user.email = email;
     // Generate the user's random hash.
