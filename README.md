@@ -224,4 +224,14 @@ Tests are ran using Jest. By default, the test script is run with the following 
 $ npm run test
 ```
 
+The tests for this application should be ran in development mode. So the test script is modified to be
+
+```javascript
+{
+  [...]
+  "test": "set NODE_ENV=development& jest",
+  [...]
+}
+```
+
 This command will run the jest command. The jest command by default sets the NODE_ENV environment variable as undefined by default. But this applications, in order to work needs to be run with NODE_ENV=development.
