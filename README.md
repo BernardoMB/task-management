@@ -235,3 +235,12 @@ The tests for this application should be ran in development mode. So the test sc
 ```
 
 This command will run the jest command. The jest command by default sets the NODE_ENV environment variable as undefined by default. But this applications, in order to work needs to be run with NODE_ENV=development.
+
+## TODO tasks for further development
+
+- HTTPS for secure communication
+- NestJS Techniques - MongoDB with Mongoose
+- NestJS Techniques - File Upload
+- NestJS - GraphQL Quickstart
+- Create a domain names for AWS Applications
+- Deployment using Elastic Beanstalk CLI
