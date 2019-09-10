@@ -181,9 +181,11 @@ The bank comunication will be handled in a similar way the Product Server's RPM 
 
 ## Front-end Application
 
-The front application that consumes this API can be found [here](https://github.com/BernardoMB/task-management-frontend).
+The repository of the front-end code of the client application that consumes this API can be found [here](https://github.com/BernardoMB/task-management-frontend).
 
-There is a front-end application using React deployed via Amazon S3 service. Please see the [video](https://www.udemy.com/nestjs-zero-to-hero/learn/lecture/15044214#overview) explaining how to host a website using Amazon S3 service.
+This client application is built on React and it has been deployed via Amazon S3 service. It can be found (here)[http://task-management-react-app.s3-website.us-east-2.amazonaws.com/signup]. Please see the [video](https://www.udemy.com/nestjs-zero-to-hero/learn/lecture/15044214#overview) explaining how to host a website using Amazon S3 service.
+
+This client application currently sends requests to an instance of this application deployed on an Amazon's S3 Bucket.
 
 ## Deployment
 
@@ -211,6 +213,8 @@ Some development dependencies need to be moved over to dependencies
 This application is deployed using Amazon's Elastic Beanstalk through their web interface. Elastic Beanstalk allow developers to deploy applications with multiple environment, it will configure the login, load balancer, networking, security groups automatically. It can also setup a database apart from the deployment and environment variables aport from the deployment. An application deployed using Elastic Beanstalk can make use of EC2, VPC, Cloud Watch, and a lot of AWS services that have to be configured manually. With Elastic Beanstalk everything can be configured manually and will be set up as a part of the deployment. When an instance of Elastic Beanstalk is deleted, all of its dependencies such as EC2 and load balancers will be also deleted.
 
 The name of the Elastic Beanstalk instance is **task-management-nestjs-app**.
+
+The URL for consuming this API is the following: <http://task-management-nestjs-app-prod.us-east-2.elasticbeanstalk.com>.
 
 Please see the [video](https://www.udemy.com/nestjs-zero-to-hero/learn/lecture/15046592#overview) to deploy the application.
 
