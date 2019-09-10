@@ -51,6 +51,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * If the signature is not valid, then an error is thrown.
    * If the signature is valid, then this method is called passing the payload of the token.
    *
+   * Note: Whatever this method returns gets injected in the request
+   * for every guarded route.
+   *
    * @param {JwtPayload} payload This payload is already verified at this point
    * (by the moment this function gets executed, the signature of the token has already
    * been verified using the secret provided in the super contructor above).
