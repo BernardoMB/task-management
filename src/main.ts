@@ -24,7 +24,7 @@ async function bootstrap() {
   if (process.env.NODE_ENV === 'development') {
     // Application is in development mode
     app.enableCors({ origin: '*' });
-    logger.log('Accepting requests from any (*) origin');
+    logger.log('Accepting requests from any origin');
   } else {
     // Application is in production mode
     app.enableCors({ origin: serverConfig.origin });
@@ -37,9 +37,9 @@ async function bootstrap() {
   await app.listen(port);
   // Passing bootstrap because the logger is used inside the bootstrap function.
   logger.log(
-    `Application listening on port ${port} under ${JSON.stringify(
-      process.env.NODE_ENV,
-    )} environment`,
+    `Application listening on port ${port} under ${
+      process.env.NODE_ENV
+    } environment`,
   );
 }
 bootstrap();

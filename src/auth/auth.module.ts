@@ -11,16 +11,17 @@ import * as config from 'config';
 const jwtConfig = config.get('jwt');
 
 /**
- * This module lets the application to issue tokens for the
+ * This module lets the application to issue *tokens* for the
  * authenticated clients so they can send them along with
  * every request they make without having to send their credentials
  * to prove that they are who they say they are.
+ *
  * This authentication module uses Json Web Token (JWT) authentication
  * with a defined strategy to handle user's tokens and authentication.
  * The Json Web Tokens issued by the application have 3 components:
- * 1. Header: Contains metadata about the token (type, hashing algorithm, etc)
- * 2. Payload: Contains claims (statements about an entity - for example, a user) and additional data.
- * 3. Signature: Is the result of the encoded the header, the payload, signed againsts a secret. Also,
+ * 1. **Header**: Contains metadata about the token (type, hashing algorithm, etc).
+ * 2. **Payload**: Contains claims (statements about an entity - for example, a user) and additional data.
+ * 3. **Signature**: Is the result of the encoded the header, the payload, signed againsts a secret. Also,
  * it certifies that only the party holding the private key is the one that signed it.
  *
  * @export
@@ -38,7 +39,7 @@ const jwtConfig = config.get('jwt');
     // The JwtModule makes available the JwtService that is used
     // (via constructor injection) to create signed tokens.
     // This module is only used to create the token with its 3 components (create a signed token).
-    // It is like an utility module that is only used inside this module.
+    // It is like an utility module that is only used inside this authentication module.
     JwtModule.register({
       secret: process.env.JWT_SECRET || jwtConfig.secret,
       signOptions: {
