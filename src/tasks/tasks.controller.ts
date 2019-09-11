@@ -12,6 +12,7 @@ import {
   ParseIntPipe,
   UseGuards,
   Logger,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -22,6 +23,7 @@ import { TaskStatus } from './task-status.enum';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../auth/user.entity';
 import { GetUser } from '../auth/decorators/get-user.decorator';
+import { TokenRefresherInterceptor } from '../auth/interceptors/token-refresher.interceptor';
 
 /**
  * Any incoming request to /tasks will be handled by this controller thanks to the controller decorator.
@@ -34,6 +36,7 @@ import { GetUser } from '../auth/decorators/get-user.decorator';
  */
 @Controller('tasks')
 @UseGuards(AuthGuard())
+@UseInterceptors(TokenRefresherInterceptor)
 export class TasksController {
   private logger = new Logger('TaskController');
   /**
@@ -65,13 +68,13 @@ export class TasksController {
     @Query(ValidationPipe) filterDto: GetTasksFilterDto,
     @GetUser() user: User,
   ): Promise<Task[]> {
-    this.logger.verbose(
+    /* this.logger.verbose(
       `User "${user.username}" retreiving all tasks. Filters: ${JSON.stringify(
         filterDto,
         null,
         2,
       )}`,
-    );
+    ); */
     return this.tasksService.getTasks(filterDto, user);
   }
 
@@ -118,17 +121,17 @@ export class TasksController {
     // @Body('description') description: string
     @GetUser() user: User,
   ): Promise<Task> {
-    this.logger.verbose(
+    /* this.logger.verbose(
       `User "${user.username}" creating a new task. Data: ${JSON.stringify(
         createTaskDto,
         null,
         2,
       )}`,
-    );
+    ); */
     const createdTask = await this.tasksService.createTask(createTaskDto, user);
-    this.logger.verbose(
+    /* this.logger.verbose(
       `Task created: ${JSON.stringify(createdTask, null, 2)}`,
-    );
+    ); */
     return createdTask;
   }
 

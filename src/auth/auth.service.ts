@@ -68,9 +68,9 @@ export class AuthService {
     };
     // Create the token.
     const accessToken = await this.jwtService.sign(payload);
-    this.logger.debug(
+    /* this.logger.debug(
       `Generated JWT token with payload ${JSON.stringify(payload, null, 2)}`,
-    );
+    ); */
     return { accessToken };
   }
 }

@@ -39,13 +39,13 @@ export class AuthController {
   @Post('/signup')
   @UsePipes(ValidationPipe)
   signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    this.logger.debug(
+    /* this.logger.debug(
       `Signing up user. Auth credentials DTO: ${JSON.stringify(
         authCredentialsDto,
         null,
         2,
       )}`,
-    );
+    ); */
     return this.authService.signUp(authCredentialsDto);
   }
 
@@ -63,13 +63,13 @@ export class AuthController {
   signIn(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
-    this.logger.debug(
+    /* this.logger.debug(
       `Signing in user. Auth credentials DTO: ${JSON.stringify(
         authCredentialsDto,
         null,
         2,
       )}`,
-    );
+    ); */
     return this.authService.signIn(authCredentialsDto);
   }
 

@@ -7,8 +7,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
 import * as config from 'config';
-import { RefreshTokenMiddleware } from './middlewares/refresh-token.middleware';
 import { RefreshTokenService } from './services/refresh-token.service';
+import { TokenRefresherInterceptor } from './interceptors/token-refresher.interceptor';
 
 const jwtConfig = config.get('jwt');
 
@@ -54,9 +54,9 @@ const jwtConfig = config.get('jwt');
   controllers: [AuthController],
   providers: [
     AuthService,
-    JwtStrategy,
-    RefreshTokenService,
-    RefreshTokenMiddleware,
+    JwtStrategy, // Makes available the Passport strategy for using AuthGuard to atomatically block unathorized requests.
+    RefreshTokenService, // This service is used to create new tokens for secured routes.
+    TokenRefresherInterceptor, // This interceptor sets the authorization header with the new refreshed token.
   ],
   // Export the JwtStrategy along with it's module to
   // let other modules secure their resourses.
@@ -64,7 +64,7 @@ const jwtConfig = config.get('jwt');
     PassportModule,
     JwtStrategy,
     RefreshTokenService,
-    RefreshTokenMiddleware,
+    TokenRefresherInterceptor,
   ],
 })
 export class AuthModule {}

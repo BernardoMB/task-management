@@ -83,7 +83,7 @@ export class UserRepository extends Repository<User> {
     });
     const user = res[0];
     if (user && (await user.validatePassword(password))) {
-      this.logger.debug('User found and password is valid');
+      /* this.logger.debug('User found and password is valid'); */
       return user.username;
     } else {
       return null;

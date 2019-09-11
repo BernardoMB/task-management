@@ -30,6 +30,27 @@ async function bootstrap() {
     app.enableCors({ origin: serverConfig.origin });
     logger.log(`Accepting requests from origin "${serverConfig.origin}"`);
   }
+  // Expose custom headers
+  app.use((req, res, next) => {
+    // set headers to allow cross origin request.
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+      'Access-Control-Allow-Methods',
+      'PUT, GET, POST, DELETE, OPTIONS',
+    );
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept',
+    );
+    // Expose x-auth header in the preflight response
+    res.header('Access-Control-Expose-Headers', 'x-auth');
+    res.header('Access-Control-Expose-Headers', 'Authorization');
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept',
+    );
+    next();
+  });
 
   // Implement application level pipes
   // app.useGlobalPipes(SomePipe);
