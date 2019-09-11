@@ -1,9 +1,15 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskRepository } from './task.repository';
 import { AuthModule } from '../auth/auth.module';
+import { RefreshTokenMiddleware } from '../auth/middlewares/refresh-token.middleware';
 
 /**
  * This module is used to tell the application about everything related to tasks.
@@ -24,4 +30,10 @@ import { AuthModule } from '../auth/auth.module';
   controllers: [TasksController],
   providers: [TasksService],
 })
-export class TasksModule {}
+export class TasksModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(RefreshTokenMiddleware)
+      .forRoutes({ path: 'tasks', method: RequestMethod.GET });
+  }
+}

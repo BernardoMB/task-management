@@ -2,11 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
 import * as config from 'config';
+import { RefreshTokenMiddleware } from './middlewares/refresh-token.middleware';
+import { RefreshTokenService } from './services/refresh-token.service';
 
 const jwtConfig = config.get('jwt');
 
@@ -50,9 +52,19 @@ const jwtConfig = config.get('jwt');
     TypeOrmModule.forFeature([UserRepository]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    RefreshTokenService,
+    RefreshTokenMiddleware,
+  ],
   // Export the JwtStrategy along with it's module to
   // let other modules secure their resourses.
-  exports: [PassportModule, JwtStrategy],
+  exports: [
+    PassportModule,
+    JwtStrategy,
+    RefreshTokenService,
+    RefreshTokenMiddleware,
+  ],
 })
 export class AuthModule {}

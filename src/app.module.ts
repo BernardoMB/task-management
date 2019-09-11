@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
@@ -14,8 +19,8 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     // Database configuration
     TypeOrmModule.forRoot(typeOrmConfig),
-    TasksModule,
     AuthModule,
+    TasksModule,
   ],
 })
 export class AppModule {}
