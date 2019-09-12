@@ -16,4 +16,4 @@ db:
   database: 'taskmanagement'
 
 jwt:
-  expiresIn: 10
+  expiresIn: 3600
