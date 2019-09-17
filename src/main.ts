@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as config from 'config';
+import { Request, Response, NextFunction } from 'express';
 
 /**
  * Applications entry point
@@ -31,24 +32,17 @@ async function bootstrap() {
     logger.log(`Accepting requests from origin "${serverConfig.origin}"`);
   }
   // Expose custom headers
-  app.use((req, res, next) => {
-    // set headers to allow cross origin request.
-    res.header('Access-Control-Allow-Origin', '*');
+  app.use((req: Request, res: Response, next: NextFunction) => {
     res.header(
       'Access-Control-Allow-Methods',
       'PUT, GET, POST, DELETE, OPTIONS',
     );
     res.header(
       'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept',
-    );
-    // Expose x-auth header in the preflight response
-    res.header('Access-Control-Expose-Headers', 'x-auth');
-    res.header('Access-Control-Expose-Headers', 'Authorization');
-    res.header(
-      'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content-Type, Accept, Authorization',
     );
+    // Expose x-auth header in the preflight response
+    res.header('Access-Control-Expose-Headers', 'Authorization');
     next();
   });
 
