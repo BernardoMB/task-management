@@ -242,6 +242,7 @@ This command will run the jest command. The jest command by default sets the NOD
 
 ## TODO tasks for further development
 
+- Login with token endpoint
 - HTTPS for secure communication
 - NestJS Techniques - MongoDB with Mongoose
 - NestJS Techniques - File Upload
