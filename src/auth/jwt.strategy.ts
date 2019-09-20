@@ -1,4 +1,4 @@
-import { Strategy, ExtractJwt } from 'passport-jwt';
+import { Strategy, ExtractJwt } from 'passport-jwt'; // This package is only used on this file.
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
@@ -8,8 +8,8 @@ import { User } from './user.entity';
 import * as config from 'config';
 
 /**
- * This class going to be used to authenticate the user and retreive it using the
- * token that gets sent on every incoming request from a client.
+ * This class going to be used to retreive the token from every incoming request,
+ * verify it and decode it in order to obtain the user and validate his request.
  * In order to do so, the application must use the Passport JWT Strategy from the passport-jwt package.
  * Because this a NestJS application the Passport JWT Strategy is implemented extending functionality
  * from the PassportStrategy class from the @nestjs/passport package.

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
@@ -42,6 +42,8 @@ const jwtConfig = config.get('jwt');
     // (via constructor injection) to create signed tokens.
     // This module is only used to create the token with its 3 components (create a signed token).
     // It is like an utility module that is only used inside this authentication module.
+    // This entire package should be removed if you want to issue several types of tokens
+    // signed with different secrets. More on this in the Chapell Hill Denham back back-end.
     JwtModule.register({
       secret: process.env.JWT_SECRET || jwtConfig.secret,
       signOptions: {
@@ -54,16 +56,40 @@ const jwtConfig = config.get('jwt');
   controllers: [AuthController],
   providers: [
     AuthService,
-    JwtStrategy, // Makes available the Passport strategy for using AuthGuard to atomatically block unathorized requests.
-    RefreshTokenService, // This service is used to create new tokens for secured routes.
-    TokenRefresherInterceptor, // This interceptor sets the authorization header with the new refreshed token.
-  ],
-  // Export the JwtStrategy along with it's module to
-  // let other modules secure their resourses.
-  exports: [
-    PassportModule,
+    /**
+     * The JwtStrategy is declared here as a provider
+     * because there are dummy routes that are authenticated.
+     * Normally, the JwtStrategy should not need to be declared
+     * as a provide here, but in order modules.
+     */
     JwtStrategy,
     RefreshTokenService,
+    TokenRefresherInterceptor,
+  ],
+  exports: [
+    /**
+     * Export the PassportModule so other modules of this application
+     * can use the @AuthGuard() decorator in their routes handlers in
+     * order to secure their resourses.
+     */
+    PassportModule,
+    /**
+     * Export the JwtStrategy so @AuthGuard() decorators in other modules
+     * know how to extract, verify and decode the tokens that get sent on
+     * every request in order to validate them.
+     *
+     * The PassportModule and the JwtStrategy are tied together.
+     */
+    JwtStrategy,
+    /**
+     * Export the RefreshTokenService so route sin other modules can
+     * send a new token in their responses.
+     */
+    RefreshTokenService,
+    /**
+     * Export the RefreshTokenService so route sin other modules can
+     * send a new token in their responses.
+     */
     TokenRefresherInterceptor,
   ],
 })

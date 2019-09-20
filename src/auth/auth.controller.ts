@@ -92,7 +92,7 @@ export class AuthController {
     // At this point, the request object will contain the user
     // thanks to the validate() method inside the JwtStrategy class.
     // Note: the validate() method gets executed for this endpoint
-    // because it is decorayed with @UseGuards(AuthGuard()).
+    // because it is decorated with @UseGuards(AuthGuard()).
     console.log(request);
   }
 
